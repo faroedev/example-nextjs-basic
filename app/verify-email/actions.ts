@@ -3,10 +3,10 @@
 import { getCurrentSession } from "@/lib/server/session";
 import { setUserAsEmailVerified } from "@/lib/server/user";
 import { redirect } from "next/navigation";
-import { FaroeError } from "@/lib/server/sdk";
+import { FaroeError } from "@faroe/sdk";
 import { faroe } from "@/lib/server/faroe";
 
-import type { FaroeUserEmailVerificationRequest } from "@/lib/server/sdk";
+import type { FaroeUserEmailVerificationRequest } from "@faroe/sdk";
 
 export async function verifyEmailAction(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
 	const { session, user } = await getCurrentSession();

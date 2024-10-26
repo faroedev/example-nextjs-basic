@@ -2,12 +2,12 @@
 
 import { generateSessionToken } from "@/lib/server/session";
 import { redirect } from "next/navigation";
-import { FaroeError, verifyEmailInput } from "@/lib/server/sdk";
+import { FaroeError, verifyEmailInput } from "@faroe/sdk";
 import { faroe } from "@/lib/server/faroe";
 import { getUserFromFaroeId } from "@/lib/server/user";
 import { createPasswordResetSession, setPasswordResetSessionTokenCookie } from "@/lib/server/password-reset-session";
 
-import type { FaroePasswordResetRequest } from "@/lib/server/sdk";
+import type { FaroePasswordResetRequest } from "@faroe/sdk";
 
 export async function forgotPasswordAction(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
 	const email = formData.get("email");

@@ -3,7 +3,7 @@
 import { deleteSessionFaroeEmailUpdateRequestId, getCurrentSession } from "@/lib/server/session";
 import { updateUserEmailAndSetEmailAsVerified } from "@/lib/server/user";
 import { redirect } from "next/navigation";
-import { FaroeError } from "@/lib/server/sdk";
+import { FaroeError } from "@faroe/sdk";
 import { faroe } from "@/lib/server/faroe";
 
 export async function updateEmailAction(_prev: ActionResult, formData: FormData): Promise<ActionResult> {

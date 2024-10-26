@@ -2,7 +2,7 @@
 
 import { createSession, generateSessionToken, setSessionTokenCookie } from "@/lib/server/session";
 import { redirect } from "next/navigation";
-import { FaroeError, verifyPasswordInput } from "@/lib/server/sdk";
+import { FaroeError, verifyPasswordInput } from "@faroe/sdk";
 import { faroe } from "@/lib/server/faroe";
 import {
 	deletePasswordResetSessionTokenCookie,

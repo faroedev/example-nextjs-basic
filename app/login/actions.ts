@@ -3,10 +3,10 @@
 import { createSession, generateSessionToken, setSessionTokenCookie } from "@/lib/server/session";
 import { getUserFromFaroeId } from "@/lib/server/user";
 import { redirect } from "next/navigation";
-import { FaroeError, verifyPasswordInput, verifyEmailInput } from "@/lib/server/sdk";
+import { FaroeError, verifyPasswordInput, verifyEmailInput } from "@faroe/sdk";
 import { faroe } from "@/lib/server/faroe";
 
-import type { FaroeUser } from "@/lib/server/sdk";
+import type { FaroeUser } from "@faroe/sdk";
 
 export async function loginAction(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
 	const email = formData.get("email");

@@ -9,10 +9,10 @@ import {
 	setSessionTokenCookie
 } from "@/lib/server/session";
 import { redirect } from "next/navigation";
-import { FaroeError, verifyEmailInput, verifyPasswordInput } from "@/lib/server/sdk";
+import { FaroeError, verifyEmailInput, verifyPasswordInput } from "@faroe/sdk";
 import { faroe } from "@/lib/server/faroe";
 
-import type { FaroeEmailUpdateRequest } from "@/lib/server/sdk";
+import type { FaroeEmailUpdateRequest } from "@faroe/sdk";
 
 export async function updatePasswordAction(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
 	const { session, user } = await getCurrentSession();

@@ -2,7 +2,7 @@ import { getCurrentSession } from "@/lib/server/session";
 import { redirect } from "next/navigation";
 import { ResendVerificationCodeForm, VerifyEmailForm } from "./components";
 import { faroe } from "@/lib/server/faroe";
-import { FaroeError } from "@/lib/server/sdk";
+import { FaroeError } from "@faroe/sdk";
 
 export default async function Page() {
 	const { user } = await getCurrentSession();

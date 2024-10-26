@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { FaroeError } from "@/lib/server/sdk";
+import { FaroeError } from "@faroe/sdk";
 import { faroe } from "@/lib/server/faroe";
 import {
 	deletePasswordResetSessionTokenCookie,
