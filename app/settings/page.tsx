@@ -1,8 +1,7 @@
 import { getCurrentSession } from "@/lib/server/session";
 import { redirect } from "next/navigation";
 
-import Link from "next/link";
-import { LogoutButton } from "./components";
+import { SendEmailUpdateCodeForm, UpdatePasswordForm } from "./components";
 
 export default async function Page() {
 	const { user } = await getCurrentSession();
@@ -14,10 +13,15 @@ export default async function Page() {
 	}
 	return (
 		<>
-			<h1>Hi, {user.username}!</h1>
-			<p>Your email is {user.email}</p>
-			<Link href="/settings">Settings</Link>
-			<LogoutButton />
+			<h1>Settings</h1>
+			<section>
+				<h2>Update email</h2>
+				<SendEmailUpdateCodeForm />
+			</section>
+			<section>
+				<h2>Update password</h2>
+				<UpdatePasswordForm />
+			</section>
 		</>
 	);
 }

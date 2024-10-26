@@ -1,23 +1,22 @@
 import { getCurrentSession } from "@/lib/server/session";
 import { redirect } from "next/navigation";
 
+import { SignUpForm } from "./components";
 import Link from "next/link";
-import { LogoutButton } from "./components";
 
 export default async function Page() {
 	const { user } = await getCurrentSession();
-	if (user === null) {
+	if (user !== null) {
+		if (!user.emailVerified) {
+			return redirect("/verify-email");
+		}
 		return redirect("/login");
-	}
-	if (!user.emailVerified) {
-		return redirect("/verify-email");
 	}
 	return (
 		<>
-			<h1>Hi, {user.username}!</h1>
-			<p>Your email is {user.email}</p>
-			<Link href="/settings">Settings</Link>
-			<LogoutButton />
+			<h1>Create an account</h1>
+			<SignUpForm />
+			<Link href="/login">Sign in</Link>
 		</>
 	);
 }
