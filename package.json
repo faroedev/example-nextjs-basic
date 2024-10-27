@@ -10,7 +10,7 @@
 		"format": "prettier -w ."
 	},
 	"dependencies": {
-		"@faroe/sdk": "^0.1.0",
+		"@faroe/sdk": "^0.2.0",
 		"@oslojs/crypto": "^1.0.1",
 		"@oslojs/encoding": "^1.1.0",
 		"@pilcrowjs/db-query": "^0.0.2",

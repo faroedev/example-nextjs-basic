@@ -8,8 +8,8 @@ importers:
   .:
     dependencies:
       "@faroe/sdk":
-        specifier: ^0.1.0
-        version: 0.1.0
+        specifier: ^0.2.0
+        version: 0.2.0
       "@oslojs/crypto":
         specifier: ^1.0.1
         version: 1.0.1
@@ -84,9 +84,9 @@ packages:
       { integrity: sha512-d9zaMRSTIKDLhctzH12MtXvJKSSUhaHcjV+2Z+GK+EEY7XKpP5yR4x+N3TAcHTcu963nIr+TMcCb4DBCYX1z6Q== }
     engines: { node: ^12.22.0 || ^14.17.0 || >=16.0.0 }
 
-  "@faroe/sdk@0.1.0":
+  "@faroe/sdk@0.2.0":
     resolution:
-      { integrity: sha512-7Jdkj1ZrNdnii0rDsaRVhwBBB3aGkgiCy1AkgGBy4uZ27ESbmUZsjxuo/x+U0uF4ohsvdOp7hyByHv1FeS+yWg== }
+      { integrity: sha512-EjEOTNVsHd0taqpaIdzoI0FxYs7fLoEfle1xbXtnk/MdIR2EpRSRZQ67HUh5zmwFMosb9MjVjBwc0uOhOp3bsg== }
 
   "@humanwhocodes/config-array@0.13.0":
     resolution:
@@ -1914,7 +1914,7 @@ snapshots:
 
   "@eslint/js@8.57.1": {}
 
-  "@faroe/sdk@0.1.0":
+  "@faroe/sdk@0.2.0":
     dependencies:
       "@oslojs/encoding": 1.1.0
 

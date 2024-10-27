@@ -23,8 +23,19 @@ export function createUser(faroeId: string, email: string, username: string): Us
 	return user;
 }
 
-export function updateUserEmailAndSetEmailAsVerified(userId: number, email: string): void {
-	db.execute("UPDATE user SET email = ?, email_verified = 1 WHERE id = ?", [email, userId]);
+export function getUserFromEmail(email: string): User | null {
+	const row = db.queryOne("SELECT id, faroe_id, email, username, email_verified FROM user WHERE email = ?", [email]);
+	if (row === null) {
+		return null;
+	}
+	const user: User = {
+		id: row.number(0),
+		faroeId: row.string(1),
+		email: row.string(2),
+		username: row.string(3),
+		emailVerified: Boolean(row.number(4))
+	};
+	return user;
 }
 
 export function getUserFromFaroeId(faroeId: string): User | null {
@@ -42,6 +53,10 @@ export function getUserFromFaroeId(faroeId: string): User | null {
 		emailVerified: Boolean(row.number(4))
 	};
 	return user;
+}
+
+export function updateUserEmailAndSetEmailAsVerified(userId: number, email: string): void {
+	db.execute("UPDATE user SET email = ?, email_verified = 1 WHERE id = ?", [email, userId]);
 }
 
 export function setUserAsEmailVerified(userId: number): void {

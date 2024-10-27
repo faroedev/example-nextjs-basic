@@ -1,7 +1,7 @@
 "use server";
 
 import { createSession, generateSessionToken, setSessionTokenCookie } from "@/lib/server/session";
-import { createUser } from "@/lib/server/user";
+import { createUser, getUserFromEmail } from "@/lib/server/user";
 import { redirect } from "next/navigation";
 import { FaroeError, verifyPasswordInput, verifyEmailInput } from "@faroe/sdk";
 import { faroe } from "@/lib/server/faroe";
@@ -40,6 +40,16 @@ export async function signupAction(_prev: ActionResult, formData: FormData): Pro
 			message: "Please enter a valid email address."
 		};
 	}
+
+	const existingUser = getUserFromEmail(email);
+	if (existingUser !== null) {
+		return {
+			username,
+			email,
+			message: "Email is already used."
+		};
+	}
+
 	if (!verifyPasswordInput(password)) {
 		return {
 			username,
@@ -50,15 +60,8 @@ export async function signupAction(_prev: ActionResult, formData: FormData): Pro
 
 	let faroeUser: FaroeUser;
 	try {
-		faroeUser = await faroe.createUser(email, password, "0.0.0.0");
+		faroeUser = await faroe.createUser(password, "0.0.0.0");
 	} catch (e) {
-		if (e instanceof FaroeError && e.code === "EMAIL_ALREADY_USED") {
-			return {
-				username,
-				email,
-				message: "Email is already used."
-			};
-		}
 		if (e instanceof FaroeError && e.code === "WEAK_PASSWORD") {
 			return {
 				username,
@@ -83,8 +86,7 @@ export async function signupAction(_prev: ActionResult, formData: FormData): Pro
 	let user: User;
 	try {
 		user = createUser(faroeUser.id, email, username);
-	} catch (e) {
-		console.log(e);
+	} catch {
 		await faroe.deleteUser(faroeUser.id);
 		return {
 			username,

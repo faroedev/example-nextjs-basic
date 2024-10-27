@@ -4,7 +4,7 @@ import { generateSessionToken } from "@/lib/server/session";
 import { redirect } from "next/navigation";
 import { FaroeError, verifyEmailInput } from "@faroe/sdk";
 import { faroe } from "@/lib/server/faroe";
-import { getUserFromFaroeId } from "@/lib/server/user";
+import { getUserFromEmail } from "@/lib/server/user";
 import { createPasswordResetSession, setPasswordResetSessionTokenCookie } from "@/lib/server/password-reset-session";
 
 import type { FaroePasswordResetRequest } from "@faroe/sdk";
@@ -28,17 +28,19 @@ export async function forgotPasswordAction(_prev: ActionResult, formData: FormDa
 		};
 	}
 
+	const user = getUserFromEmail(email);
+	if (user === null) {
+		return {
+			email,
+			message: "Account does not exist."
+		};
+	}
+
 	let resetRequest: FaroePasswordResetRequest;
 	let verificationCode: string;
 	try {
-		[resetRequest, verificationCode] = await faroe.createPasswordResetRequest(email, "0.0.0.0");
+		[resetRequest, verificationCode] = await faroe.createUserPasswordResetRequest(user.faroeId, "0.0.0.0");
 	} catch (e) {
-		if (e instanceof FaroeError && e.code === "USER_NOT_EXISTS") {
-			return {
-				email,
-				message: "Account does not exist."
-			};
-		}
 		if (e instanceof FaroeError && e.code === "TOO_MANY_REQUESTS") {
 			return {
 				email,
@@ -48,15 +50,6 @@ export async function forgotPasswordAction(_prev: ActionResult, formData: FormDa
 		return {
 			email,
 			message: "An unknown error occurred. Please try again later."
-		};
-	}
-
-	const user = getUserFromFaroeId(resetRequest.userId);
-	if (user === null) {
-		await faroe.deleteUser(resetRequest.userId);
-		return {
-			email,
-			message: "Account does not exist."
 		};
 	}
 

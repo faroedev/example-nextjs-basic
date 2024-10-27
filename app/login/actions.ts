@@ -1,21 +1,21 @@
 "use server";
 
 import { createSession, generateSessionToken, setSessionTokenCookie } from "@/lib/server/session";
-import { getUserFromFaroeId } from "@/lib/server/user";
+import { getUserFromEmail } from "@/lib/server/user";
 import { redirect } from "next/navigation";
 import { FaroeError, verifyPasswordInput, verifyEmailInput } from "@faroe/sdk";
 import { faroe } from "@/lib/server/faroe";
 
-import type { FaroeUser } from "@faroe/sdk";
-
 export async function loginAction(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
-	const email = formData.get("email");
+	let email = formData.get("email");
 	const password = formData.get("password");
 	if (typeof email !== "string" || typeof password !== "string") {
 		return {
 			message: "Invalid or missing fields."
 		};
 	}
+	email = email.toLowerCase();
+
 	if (email === "" || password === "") {
 		return {
 			message: "Please enter your email and password."
@@ -34,16 +34,17 @@ export async function loginAction(_prev: ActionResult, formData: FormData): Prom
 		};
 	}
 
-	let faroeUser: FaroeUser;
+	const user = getUserFromEmail(email);
+	if (user === null) {
+		return {
+			email,
+			message: "Account does not exist."
+		};
+	}
+
 	try {
-		faroeUser = await faroe.authenticateWithPassword(email, password, "0.0.0.0");
+		await faroe.verifyUserPassword(user.faroeId, password, "0.0.0.0");
 	} catch (e) {
-		if (e instanceof FaroeError && e.code === "USER_NOT_EXISTS") {
-			return {
-				email,
-				message: "Account does not exist."
-			};
-		}
 		if (e instanceof FaroeError && e.code === "INCORRECT_PASSWORD") {
 			return {
 				email,
@@ -60,15 +61,6 @@ export async function loginAction(_prev: ActionResult, formData: FormData): Prom
 		return {
 			email,
 			message: "An unknown error occurred. Please try again later."
-		};
-	}
-
-	const user = getUserFromFaroeId(faroeUser.id);
-	if (user === null) {
-		await faroe.deleteUser(faroeUser.id);
-		return {
-			email,
-			message: "Account does not exist."
 		};
 	}
 

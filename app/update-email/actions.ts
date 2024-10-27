@@ -29,7 +29,7 @@ export async function updateEmailAction(_prev: ActionResult, formData: FormData)
 
 	let updatedEmail: string;
 	try {
-		updatedEmail = await faroe.updateUserEmail(session.faroeEmailUpdateRequestId, code);
+		updatedEmail = await faroe.verifyNewUserEmail(session.faroeEmailUpdateRequestId, code);
 	} catch (e) {
 		if (e instanceof FaroeError && e.code === "INVALID_REQUEST_ID") {
 			return {

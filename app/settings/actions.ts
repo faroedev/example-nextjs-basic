@@ -11,6 +11,7 @@ import {
 import { redirect } from "next/navigation";
 import { FaroeError, verifyEmailInput, verifyPasswordInput } from "@faroe/sdk";
 import { faroe } from "@/lib/server/faroe";
+import { getUserFromEmail } from "@/lib/server/user";
 
 import type { FaroeEmailUpdateRequest } from "@faroe/sdk";
 
@@ -100,15 +101,17 @@ export async function sendEmailUpdateCode(_prev: ActionResult, formData: FormDat
 		};
 	}
 
+	const existingUser = getUserFromEmail(email);
+	if (existingUser !== null) {
+		return {
+			message: "This email address is already used."
+		};
+	}
+
 	let updateRequest: FaroeEmailUpdateRequest;
 	try {
 		updateRequest = await faroe.createUserEmailUpdateRequest(user.faroeId, email);
 	} catch (e) {
-		if (e instanceof FaroeError && e.code === "EMAIL_ALREADY_USED") {
-			return {
-				message: "This email address is already used."
-			};
-		}
 		if (e instanceof FaroeError && e.code === "TOO_MANY_REQUESTS") {
 			return { message: "Please try again later." };
 		}
