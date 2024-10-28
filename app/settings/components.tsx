@@ -18,7 +18,7 @@ export function UpdatePasswordForm() {
 			<label htmlFor="form-password.new-password">New password</label>
 			<input type="password" id="form-password.new-password" name="new_password" autoComplete="new-password" required />
 			<br />
-			<button>Update</button>
+			<button>Send verification code</button>
 			<p>{state.message}</p>
 		</form>
 	);
