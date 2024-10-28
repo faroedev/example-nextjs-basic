@@ -11,6 +11,9 @@ export async function updateEmailAction(_prev: ActionResult, formData: FormData)
 	if (session === null) {
 		return redirect("/login");
 	}
+	if (!user.emailVerified) {
+		return redirect("/verify-email");
+	}
 	if (session.faroeEmailUpdateRequestId === null) {
 		return redirect("/");
 	}
