@@ -2,7 +2,6 @@ CREATE TABLE user (
     id INTEGER NOT NULL PRIMARY KEY,
     faroe_id TEXT NOT NULL UNIQUE,
     email TEXT NOT NULL UNIQUE,
-    email TEXT NOT NULL,
     username TEXT NOT NULL,
     email_verified INTEGER NOT NULL DEFAULT 0
 ) STRICT;
