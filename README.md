@@ -1,4 +1,4 @@
-# Faroe and Astro basic example
+# Faroe and Next.js basic example
 
 A basic Next.js example using Faroe and SQLite.
 
