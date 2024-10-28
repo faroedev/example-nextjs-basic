@@ -15,7 +15,7 @@ export default async function Page() {
 		<>
 			<h1>Settings</h1>
 			<section>
-				<h2>Update email</h2>
+				<h2>Update email address</h2>
 				<SendEmailUpdateCodeForm />
 			</section>
 			<section>
