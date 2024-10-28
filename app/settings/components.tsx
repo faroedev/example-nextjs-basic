@@ -25,6 +25,7 @@ export function UpdatePasswordForm() {
 }
 
 const initialSendEmailUpdateCodeFormState = {
+	email: "",
 	message: ""
 };
 
@@ -34,7 +35,7 @@ export function SendEmailUpdateCodeForm() {
 	return (
 		<form action={action}>
 			<label htmlFor="form-email.email">New email</label>
-			<input type="email" id="form-email.email" name="email" required />
+			<input type="email" id="form-email.email" name="email" required defaultValue={state.email} />
 			<br />
 			<button>Update</button>
 			<p>{state.message}</p>

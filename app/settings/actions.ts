@@ -15,7 +15,10 @@ import { getUserFromEmail } from "@/lib/server/user";
 
 import type { FaroeEmailUpdateRequest } from "@faroe/sdk";
 
-export async function updatePasswordAction(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
+export async function updatePasswordAction(
+	_prev: UpdatePasswordActionResult,
+	formData: FormData
+): Promise<UpdatePasswordActionResult> {
 	const { session, user } = await getCurrentSession();
 	if (session === null) {
 		return redirect("/login");
@@ -78,7 +81,10 @@ export async function updatePasswordAction(_prev: ActionResult, formData: FormDa
 	};
 }
 
-export async function sendEmailUpdateCode(_prev: ActionResult, formData: FormData): Promise<ActionResult> {
+export async function sendEmailUpdateCode(
+	_prev: SendEmailUpdateCodeActionResult,
+	formData: FormData
+): Promise<SendEmailUpdateCodeActionResult> {
 	const { session, user } = await getCurrentSession();
 	if (session === null) {
 		return redirect("/login");
@@ -91,23 +97,19 @@ export async function sendEmailUpdateCode(_prev: ActionResult, formData: FormDat
 		};
 	}
 	email = email.toLowerCase();
-	
+
 	if (email === "") {
 		return {
 			message: "Please enter your email address."
 		};
 	}
 	if (!verifyEmailInput(email)) {
-		return {
-			message: "Please enter a valid email address."
-		};
+		return { email, message: "Please enter a valid email address." };
 	}
 
 	const existingUser = getUserFromEmail(email);
 	if (existingUser !== null) {
-		return {
-			message: "This email address is already used."
-		};
+		return { email, message: "This email address is already used." };
 	}
 
 	let updateRequest: FaroeEmailUpdateRequest;
@@ -115,9 +117,9 @@ export async function sendEmailUpdateCode(_prev: ActionResult, formData: FormDat
 		updateRequest = await faroe.createUserEmailUpdateRequest(user.faroeId, email);
 	} catch (e) {
 		if (e instanceof FaroeError && e.code === "TOO_MANY_REQUESTS") {
-			return { message: "Please try again later." };
+			return { email, message: "Please try again later." };
 		}
-		return { message: "An unknown error occurred. Please try again later." };
+		return { email, message: "An unknown error occurred. Please try again later." };
 	}
 
 	console.log(`To ${email}: Your code is ${updateRequest.code}`);
@@ -127,6 +129,11 @@ export async function sendEmailUpdateCode(_prev: ActionResult, formData: FormDat
 	return redirect("/update-email");
 }
 
-interface ActionResult {
+interface UpdatePasswordActionResult {
+	message: string;
+}
+
+interface SendEmailUpdateCodeActionResult {
+	email?: string;
 	message: string;
 }
