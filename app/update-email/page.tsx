@@ -4,9 +4,12 @@ import { redirect } from "next/navigation";
 import { UpdateEmailForm } from "./components";
 
 export default async function Page() {
-	const { session } = await getCurrentSession();
+	const { session, user } = await getCurrentSession();
 	if (session === null) {
 		return redirect("/login");
+	}
+	if (!user.emailVerified) {
+		return redirect("/verify-email");
 	}
 	if (session.faroeEmailUpdateRequestId === null) {
 		return redirect("/");
