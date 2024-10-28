@@ -23,6 +23,9 @@ export async function updatePasswordAction(
 	if (session === null) {
 		return redirect("/login");
 	}
+	if (!user.emailVerified) {
+		return redirect("/verify-email");
+	}
 
 	const password = formData.get("password");
 	const newPassword = formData.get("new_password");
@@ -88,6 +91,9 @@ export async function sendEmailUpdateCode(
 	const { session, user } = await getCurrentSession();
 	if (session === null) {
 		return redirect("/login");
+	}
+	if (!user.emailVerified) {
+		return redirect("/verify-email");
 	}
 
 	let email = formData.get("email");
