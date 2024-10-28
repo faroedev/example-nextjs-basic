@@ -57,7 +57,6 @@ export async function loginAction(_prev: ActionResult, formData: FormData): Prom
 				message: "Please try again later."
 			};
 		}
-		console.log(e);
 		return {
 			email,
 			message: "An unknown error occurred. Please try again later."

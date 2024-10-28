@@ -84,12 +84,14 @@ export async function sendEmailUpdateCode(_prev: ActionResult, formData: FormDat
 		return redirect("/login");
 	}
 
-	const email = formData.get("email");
+	let email = formData.get("email");
 	if (typeof email !== "string") {
 		return {
 			message: "Invalid or missing fields."
 		};
 	}
+	email = email.toLowerCase();
+	
 	if (email === "") {
 		return {
 			message: "Please enter your email address."
