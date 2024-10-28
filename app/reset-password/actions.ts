@@ -16,6 +16,9 @@ export async function resetPasswordAction(_prev: ActionResult, formData: FormDat
 	if (passwordResetSession === null) {
 		return redirect("/login");
 	}
+	if (!passwordResetSession.emailVerified) {
+		return redirect("/verify-password-reset-email");
+	}
 
 	const password = formData.get("password");
 	if (typeof password !== "string") {
