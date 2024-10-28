@@ -15,7 +15,7 @@ export default async function Page() {
 	return (
 		<>
 			<h1>Hi, {user.username}!</h1>
-			<p>Your email is {user.email}</p>
+			<p>Your email address is {user.email}.</p>
 			<Link href="/settings">Settings</Link>
 			<LogoutButton />
 		</>
